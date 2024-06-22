@@ -6,7 +6,7 @@ This is how I organize my album folders and I got tired of doing to by hand even
 
 If half of the folders inside are already organized, this will properly organize the rest.
 
-##Arguments
+## Arguments
 Pass in the path to the parent directory where all of the album folders are located.
 
 """FolderMerging.exe "C:\Music Folder\New Albums"
