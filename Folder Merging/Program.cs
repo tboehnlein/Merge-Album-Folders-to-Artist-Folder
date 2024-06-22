@@ -11,14 +11,23 @@ namespace AlbumArtistMerge
     {
         static void Main(string[] args)
         {
+            bool skipAnyKey = false;
+
             if (args.Length < 1)
             {
                 Console.WriteLine("This program requires a path to the folder with all of the album folders");
 
-                Console.WriteLine("Press any key to continue...");
-                Console.ReadKey();
+                AskAnyKey();
 
                 return;
+            }
+
+            if (args.Length < 2)
+            {
+                if (args[1] == "-f")
+                {
+                    skipAnyKey = true;
+                }
             }
 
             string directoryPath = args[0];// @"M:\Soulseek Downloads\complete\__NEW\NOT DONE"; // Specify your directory path here
@@ -27,8 +36,7 @@ namespace AlbumArtistMerge
             {
                 Console.WriteLine($"Directory {directoryPath} does not exist");
 
-                Console.WriteLine("Press any key to continue...");
-                Console.ReadKey();
+                AskAnyKey();
 
                 return;
             }
@@ -37,8 +45,7 @@ namespace AlbumArtistMerge
 
             Console.WriteLine("Album folders must in the format of 'artist name - album name'");
 
-            Console.WriteLine("Press any key to continue...");
-            Console.ReadKey();
+            AskAnyKey(skipAnyKey);
 
             Console.WriteLine("");
 
@@ -90,8 +97,16 @@ namespace AlbumArtistMerge
 
             Console.WriteLine($"Done reorganizing album folders in {directoryPath}");
 
-            Console.WriteLine("Press any key to continue...");
-            Console.ReadKey();
+            AskAnyKey(skipAnyKey);
+        }
+
+        private static void AskAnyKey(bool skipAnyKey = false)
+        {
+            if (!skipAnyKey)
+            {
+                Console.WriteLine("Press any key to continue...");
+                Console.ReadKey();
+            }
         }
     }
 }
