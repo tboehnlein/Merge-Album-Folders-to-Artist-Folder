@@ -2,7 +2,7 @@
 
 Moves all album folders with the same artist name into a single parent folder named after the artist.
 
-This is how I organize my album folders and I got tired of doing to by hand even with macros.
+This is how I organize my album folders and I got tired of doing it by hand even with macros.
 
 If half of the folders inside are already organized, this will still properly organize the rest.
 
