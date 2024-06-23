@@ -1,6 +1,6 @@
 # Folder Merging
 
-Moves all album folders with the same artist name in a single parent folder named after the artist.
+Moves all album folders with the same artist name into a single parent folder named after the artist.
 
 This is how I organize my album folders and I got tired of doing to by hand even with macros.
 
