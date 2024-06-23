@@ -18,7 +18,7 @@ Pass `-h` or `--help`
   shows help message
   
 Pass `-s` or `--simulate`
-  runs a test the program without making any file changes
+  runs a test of the program without making any file changes
 
 ## Assumptions
 Album folders must be in the format of "artist name - album name' in order for this to work properly.
