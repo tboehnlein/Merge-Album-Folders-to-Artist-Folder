@@ -11,7 +11,9 @@ Pass in the path to the parent directory where all of the album folders are loca
 
 Example: `FolderMerging.exe "C:\Music Folder\New Albums"`
 
-Pass -f to force skipping Press Any Key prompts for non-error situations. Errors will always have Press Any Key
+Pass -f or --force to force skipping Press Any Key prompts for non-error situations. Errors will always have Press Any Key
+Pass -h or --help to show help message
+Pass -s or --simulate to run test the program without making any file changes
 
 ## Assumptions
 Album folders must be in the format of "artist name - album name' in order for this to work properly.
