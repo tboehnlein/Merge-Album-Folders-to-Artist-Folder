@@ -15,10 +15,7 @@ namespace AlbumArtistMerge
         /// <param name="args">path to folder that contains all of the album folders, force skip press any key for non-errors</param>
         static void Main(string[] args)
         {
-            bool skipAnyKey = false;
-            string directoryPath = string.Empty;
-
-            if(!ProcessArguments(args, ref directoryPath, ref skipAnyKey))
+            if(!ProcessArguments(args, out string directoryPath, out bool skipAnyKey, out bool simulate))
             {
                 return;
             }
@@ -34,6 +31,11 @@ namespace AlbumArtistMerge
 
             Console.WriteLine("Beginning moving album folders into artists folders");
             Console.WriteLine("Album folders must in the format of 'artist name - album name'");
+
+            if(simulate)
+            {
+                Console.WriteLine("Simulating moving folders");
+            }
 
             AskAnyKey(skipAnyKey);
 
@@ -83,11 +85,19 @@ namespace AlbumArtistMerge
                     if (!Directory.Exists(artistPath))
                     {
                         Console.WriteLine($"Creating missing artist folder: '{artistPath}'");
-                        Directory.CreateDirectory(artistPath);
+                        
+                        if (!simulate)
+                        {
+                            Directory.CreateDirectory(artistPath);
+                        }
                     }
 
                     Console.WriteLine($"MOVING{Environment.NewLine}'{originalFolderPath}'{Environment.NewLine}INTO{Environment.NewLine}'{newFolderPath}'");
-                    Directory.Move(originalFolderPath, newFolderPath);
+
+                    if (!simulate)
+                    {
+                        Directory.Move(originalFolderPath, newFolderPath);
+                    }
                 }
             }
 
@@ -96,37 +106,48 @@ namespace AlbumArtistMerge
             AskAnyKey(skipAnyKey);
         }
 
-        private static bool ProcessArguments(string[] args, ref string directoryPath, ref bool skipAnyKey)
+        private static bool ProcessArguments(string[] args, out string directoryPath, out bool skipAnyKey, out bool simulate)
         {
             bool validArguments = true;
+            directoryPath = string.Empty;
+            skipAnyKey = false;
+            simulate = false;
 
-            switch (args.Length)
+            if (args.Contains("-h") || args.Contains("--help"))
             {
-                case 0:
-                    Console.WriteLine("This program requires a path to the folder with all of the album folders");
-                    AskAnyKey();
-                    validArguments = false;
+                Console.WriteLine("This program moves album folders formated as 'artist - album' into a single artist folders");
+                Console.WriteLine("Usage: AlbumArtistMerge.exe [-f] [-s] [-h] <path to folder with all of the album folders>");
+                Console.WriteLine("Options:");
+                Console.WriteLine("  -f  force skip press any key for non-errors");
+                Console.WriteLine("  -s  simulate organizing files");
+                Console.WriteLine("  -h  display this help message");
+                AskAnyKey();
+                return false;
+            }
+
+            if (args.Contains("-f") || args.Contains("--force"))
+            { 
+                skipAnyKey = true;
+            }
+
+            if (args.Contains("-s") || args.Contains("--simulate"))
+            {
+                simulate = true;
+            }
+
+            foreach (var arg in args)
+            {
+                if (arg.Contains(Path.DirectorySeparatorChar))
+                {
+                    directoryPath = arg;
                     break;
-                case 1:
-                    directoryPath = args[0];
-                    break;
-                case 2:
-                    if (args[0] == "-f")
-                    {
-                        skipAnyKey = true;
-                        directoryPath = args[1];
-                    }
-                    else if (args[1] == "-f")
-                    {
-                        skipAnyKey = true;
-                        directoryPath = args[0];
-                    }
-                    break;
-                default:
-                    Console.WriteLine("Too many arguments");
-                    AskAnyKey();
-                    validArguments = false;
-                    break;
+                }
+            }
+
+            if (string.IsNullOrEmpty(directoryPath))
+            {
+                Console.WriteLine("No directory path provided");
+                validArguments = false;
             }
 
             return validArguments;
